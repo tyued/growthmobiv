@@ -1,0 +1,385 @@
+.maskTips{width:100%; height:100%;top:0;left:0;position:fixed;z-index:500;background:rgba(0, 0, 0, .5);}
+/* 提示弹框 */
+.tipsBox{ z-index: 600; display: -webkit-box;display: -ms-flexbox;display:flex;-webkit-box-align: center;align-items: center;-webkit-box-pack: center;justify-content: center; position:absolute; width:100%; height:100%; top: 0; left:0;text-align:center;}
+.layerTips{position:absolute; height:100%; width:100%; z-index:550; text-align: center;}
+.hDialog{background:rgba(0, 0, 0, .55); padding:.8rem; max-width:60%; max-height:4rem; overflow: hidden;  border-radius:5px;color:#FFF; font-size:.3rem; line-height: .5rem; text-align: center;}
+
+
+
+.header {
+    width: 100%;
+    height: .88rem;
+    border-bottom: 1px solid #e2e2e2;
+    background: #FFF;
+    position: relative;
+    z-index: 50;
+}
+.header .h-templateSave {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+}
+.header span {
+    font-size: .32rem;
+    color: #ffa200;
+    line-height: .87rem;
+}
+.header .h-back {
+    margin: 0 .25rem;
+    background: url() no-repeat left center;
+    background-size: auto 80%;
+    padding-left: .3rem;
+}
+.header .h-save {
+    float: right;
+    margin: 0 .25rem;
+}
+.page{
+    background-color:#FFF;
+    width:100%;
+    height:100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-top: .88rem;
+    z-index: 1;
+}
+.growthMain{
+    width:100%;
+    height:100%;
+    position: relative;
+    z-index: 1;
+}
+.ThumbnailImg{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+.ThumbnailImg img{
+    width:100%;
+    height:100%;
+}
+.editel{
+    position: absolute;
+    /* overflow: hidden; */
+    box-sizing: border-box;
+}
+.editel .editborder {
+    width: 100%;
+    height: 100%;
+}
+.editborder img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.shapeimg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+}
+.shapeimg>img {
+    position: absolute;
+}
+
+/* 编辑页面 */
+.editview{
+    width:100%;
+    height:100%;
+}
+.editImg{
+    width: 100%;
+    height:100%;
+    position:relative;
+    background:rgba(0, 0, 0, .5);
+}
+.editBox{
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+}
+.baseImg{
+    position:relative;
+    left:50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+}
+.baseImg img{
+    position: absolute;
+}
+.baseImg .baseBox{
+    border: 1px solid #ffa200;
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index: 10;
+}
+.canvasmasking{
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color:rgba(0,0,0,0.5);
+}
+.masking{
+    position: absolute;
+    /*//overflow: hidden;*/
+    z-index:10;
+    border:1px solid #FFF;
+    /* box-sizing: content-box; */
+}
+.resize{
+    width:2rem;
+    height:2rem;
+    background:transparent;
+    position:absolute;
+    /* bottom: -.06rem;
+    right:-.06rem; */
+    bottom: -1rem;
+    right:-1rem;
+}
+.resize span{
+    display: block;
+    width:.4rem;
+    height:.4rem;
+    border-right: .06rem solid #FFF;
+    border-bottom: .06rem solid #FFF;
+    background:transparent;
+    position:absolute;
+    top: 0.66rem;
+    left: 0.66rem;
+}
+.imgsave{
+    position:absolute;
+    width: 2rem;
+    height:.7rem;
+    border-radius:5px;
+    font-size:.34rem;
+    line-height:.7rem;
+    background:rgba(56, 121, 127, 0.7);
+    color:#FFF;
+    text-align: center;
+    bottom:1.5rem;
+    left:50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+}
+
+.ChoiceImgBox {
+    width: 100%;
+    padding: .3rem .5rem;
+    background: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 550;
+}
+.ChoiceImgBox .ciBtn {
+    width: 100%;
+    height: .8rem;
+    margin: .1rem 0;
+    float: left;
+    display: block;
+    position: relative;
+    background: #f2f2f2;
+    border: 1px solid #e2e2e2;
+    font-size: .24rem;
+    line-height: .8rem;
+    text-align: center;
+    color: #999;
+}
+.editpg{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0);
+    z-index: 99;
+}
+.editpgBox{
+    position: absolute;
+    top: .88rem;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+}
+.edSize_main {
+    position: absolute;
+    /* -moz-box-shadow: 0 0 0.04rem #ff8533;
+    box-shadow: 0 0 0.04rem #ff8533; */
+    border: 0.04rem solid #ff8533;
+    z-index: 99;
+    cursor: all-scroll;
+    font-size: .24rem;
+    width:3.9rem;
+    box-sizing: content-box;
+}
+.edSize_text {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.editresize{
+    position: absolute;
+    right: -.5rem;
+    bottom: -.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: rgba(0, 0, 0, 0);
+}
+.editresize span{
+    display: block;
+    width: .4rem;
+    height: .4rem;
+    border-right: .06rem solid #ff9600;
+    border-bottom: .06rem solid #ff9600;
+    background: transparent;
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+}
+.el_text{
+    width: 3.9rem;
+    font-size: .24rem;
+}
+.editText{
+    height: 100%;
+    word-wrap: break-word;word-break:break-all; 
+    /* -webkit-appearance: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);-webkit-user-modify:read-write-plaintext-only;outline:0; */
+}
+.photoMain {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+.empty{
+    background-image: url(../../src/assets/blank.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 3.8rem;
+    background-size: 60%;
+    margin-top: 1.9rem;
+}
+.timeLine{
+    width:100%;
+    float: left;
+}
+.timeLine>ul{
+    padding-bottom: .2rem
+}
+.timeLine>ul>li{
+    padding-top:.24rem;
+}
+.dateInfo{
+    font-size: .2rem;
+    padding-bottom:.2rem;
+    padding-top:.3rem;
+    padding-left:.2rem;
+}
+.dateInfo span{
+    font-size:.28rem;
+    margin:0 .05rem;
+    font-weight: bold;
+}
+.photolist>ul>li{
+    width:1.875rem;
+    float: left;
+    padding:.02rem;
+}
+.photolist .photobox{
+    width:1.85rem;
+    height:1.85rem;
+    position:relative;
+    overflow: hidden;
+}
+.photolist .photobox img{
+    position:absolute;
+}
+
+.albumMain{
+    width: 100%;
+    height:100%;
+    background:#FFF;
+}
+.albumList{
+    padding:.2rem .12rem;
+}
+.albumList>li{
+    padding:.12rem;
+    float:left;
+}
+.albumList .albumImg{
+    width:3.39rem;
+    height:3.39rem;
+    position:relative;
+    overflow: hidden;
+}
+.albumList .albumImg img{
+    width:100%; 
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.albumName{
+    width:3.39rem;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    font-size:.3rem;
+    color:#666;
+}
+.photoCount{
+    font-size:.24rem;
+    color:#999;
+}
+.photoListBox{
+    width:100%;
+    float:left;
+}
+.photoMain{
+    width: 100%;
+    height:100%;
+    background:#FFF;
+}
+.photoList{
+    padding:0;
+}
+.photoListBox>li{
+    width:1.875rem;
+    float: left;
+    padding:.02rem;
+}
+.photoList .photobox{
+    width:1.85rem;
+    height:1.85rem;
+    position:relative;
+    overflow: hidden;
+}
+.photoList .photobox img{
+    width:100%; 
+    height:100%;
+    position:absolute;
+}
+.ciInput_file{ 
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    z-index: 1;
+}
+.transf {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
