@@ -28,11 +28,7 @@
     "babel-loader": "^6.0.0",
     "babel-preset-env": "^1.5.1",
     "babel-preset-latest": "^6.0.0",
-    
     "babel-preset-stage-3": "^6.24.1",
-
-
-
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
@@ -48,8 +44,6 @@
     "vue-template-compiler": "^2.4.4",
     "webpack": "2.6.1",
     "webpack-dev-server": "2.5.0",
-
-
     "moment": "^2.22.0"
   }
 }
