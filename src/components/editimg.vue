@@ -65,7 +65,8 @@ export default {
             startcutH:'',                   //初始时剪切框大小
 
             //保存
-            realR:'',                       //当前状态下   绘制图片canvas与原页面图片大小（非原始大小）的比例         
+            realR:'',                       //当前状态下   绘制图片canvas与原页面图片大小（非原始大小）的比例    
+            isChange: false,     
         }
     },
     mounted:function(){
@@ -209,7 +210,8 @@ export default {
                     this.$refs.can.width =  this.cut_canW;
                     this.$refs.can.height = this.cut_canH;
                     this.can2d.drawImage(this.cutimg, this.curleft*this.izoompar, this.curtop*this.izoompar, this.cut_canW*this.izoompar, this.cut_canH*this.izoompar, 0,0, this.cut_canW, this.cut_canH)
-                
+                    
+                    this.isChange = true;
                 }
             }else{                              // 移动剪切框
                 var targetTop = this.curtop + pageY;
@@ -235,7 +237,7 @@ export default {
                         this.$refs.movemask.style.left = this.curleft + pageX + 'px'
                     }
                     this.can2d.drawImage(this.cutimg, targetLeft*this.izoompar, targetTop*this.izoompar, this.cut_canW*this.izoompar, this.cut_canH*this.izoompar, 0,0, this.cut_canW, this.cut_canH)
-                
+                    this.isChange = true;
                 }
             }
         
@@ -251,6 +253,11 @@ export default {
             this.curleft = parseInt(this.$refs.movemask.style.left);
         },
         imgsave(){
+            if(this.CurSrc.Src!=this.imgInfo.src){
+                this.isChange = true
+            }
+            this.$store.dispatch("setisChange",this.isChange);
+            
             var el_JsonPg = archivesInfo[this.pageIndex].JsonPage;
             //所在页面里元素的类型     0：图片   1：文字    2：带相框 
             var el_type = el_JsonPg.el_type;            
@@ -305,30 +312,32 @@ export default {
             var dataParamet = {"Style":el_JsonPg.page_style,"Level1ElementList":ElementListArr}
 
 
-            this.$store.dispatch("setIsTips",{"_isShow":true,"_value":"正在保存中..."});
+            // this.$store.dispatch("setIsTips",{"_isShow":true,"_value":"正在保存中..."});
             var that = this;
+
+            this.$router.push({path:'home'})
             // 保存（上传）编辑         pageId---->对应archivesInfo[this.pageIndex]里的值
             //http://192.168.0.3:5581/webapi/api/GrowthEditor/SavePage?loginUserId=1070428102732390&loginAccountType=0&loginFamilyStudentUserId=1070428102732390&themeStyleId=1&themeTemplateId=1&userId=2170907160208153&plateId=&roleType=4&pageId=59368767-00ba-11e8-ae58-a4badb17ff39&growthType=4&growthId=1
-            this.$store.dispatch("setSavePage",{
-                "loginUserId":SST_Global_Account.LoginUserId,
-                "loginAccountType":SST_Global_Account.LoginUserAccountType,
-                "loginFamilyStudentUserId":SST_Global_Account.LoginFamilyStudentUserId,
-                "themeStyleId":this.themeStyleId,"themeTemplateId":this.themeTemplateId,
-                "userId":this.userId,"growthId":this.growthId,
-                "plateId":'',"roleType":"4",
-                "growthType":this.growthType,
-                "pageId":archivesInfo[this.pageIndex].Id,
-                "pageInfo":"="+(encodeURIComponent(JSON.stringify(dataParamet)))
-            }).then(response => {
-                if(response.ResultCode!=1){
-                    console.log("数据加载失败.请重试.")
-                }else{
-                    console.log("数据加载成功.")
-                    isEdit = "0";
-                    that.$store.dispatch("setIsTips",{"_isShow":false});
-                    that.$router.push({path:'home'})
-                }
-            })
+            // this.$store.dispatch("setSavePage",{
+            //     "loginUserId":SST_Global_Account.LoginUserId,
+            //     "loginAccountType":SST_Global_Account.LoginUserAccountType,
+            //     "loginFamilyStudentUserId":SST_Global_Account.LoginFamilyStudentUserId,
+            //     "themeStyleId":this.themeStyleId,"themeTemplateId":this.themeTemplateId,
+            //     "userId":this.userId,"growthId":this.growthId,
+            //     "plateId":'',"roleType":"4",
+            //     "growthType":this.growthType,
+            //     "pageId":archivesInfo[this.pageIndex].Id,
+            //     "pageInfo":"="+(encodeURIComponent(JSON.stringify(dataParamet)))
+            // }).then(response => {
+            //     if(response.ResultCode!=1){
+            //         console.log("数据加载失败.请重试.")
+            //     }else{
+            //         console.log("数据加载成功.")
+            //         isEdit = "0";
+            //         that.$store.dispatch("setIsTips",{"_isShow":false});
+            //         that.$router.push({path:'home'})
+            //     }
+            // })
         },
         _getQueryId(name){
             var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");

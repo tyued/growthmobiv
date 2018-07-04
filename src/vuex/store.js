@@ -18,6 +18,7 @@ const state = {
 
   // 点击图片编辑
   choiceimg:{
+    src:'',
     isChoiceImg:false,
     curBoxHeight:0,
     curBoxWidth:0
@@ -36,7 +37,13 @@ const state = {
     editSelHtml:'',
     editSelID:'',
     pageIndex:'',
+    transfcss:'',
   },   
+  // editAct:{editSelShow:false},
+  
+  editAct:false,
+
+
   txtInfo:{                   //文字编辑的信息
       cssStyle:'',
       text:'',
@@ -47,6 +54,8 @@ const state = {
 
   mrimg:'this.src="' + require('../assets/defaultclassyouer.png') + '"',  //默认图片
   noneimg:'../assets/mrimg.png',
+
+  changePgId:[],          //修改过的页面的id
 };
 
 export default new Vuex.Store({

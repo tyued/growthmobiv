@@ -1,7 +1,7 @@
 <template> 
     <div class="editpg" @touchend="touchcloseEdit" v-show="editSel.editSelShow">  
         <div class="editpgBox">    
-            <div ref="editSize" class="edSize_main" v-show="editSel.editSelShow" :style="editSel.editSelSty" @touchstart="touchstartEdit" @touchmove="touchmoveEdit" @touchend="touchendEdit">
+            <div ref="editSize" class="edSize_main" v-show="editSel.editSelShow" :style="editSel.editSelSty+editSel.transfcss" @touchstart="touchstartEdit" @touchmove="touchmoveEdit" @touchend="touchendEdit">
                 <div class="edSize_text proxy-text" v-html="editSel.editSelHtml"></div>
                 <div ref="editresize" class="editresize" style="" @touchstart="touchstartEditResize"><span></span></div>
             </div>
@@ -46,7 +46,6 @@ export default {
     },
     mounted:function(){
         this.editSel = this.$store.getters.getEditSel; 
-
         var that = this
         $(document).on('focusout', function () {
             that.clickedit = true
@@ -155,7 +154,21 @@ export default {
                     objcur = obj[i];
                 }
             }  
-            objcur.style.cssText = this.$refs.editSize.style.cssText;
+
+            var edSty = this.$refs.editSize.style.cssText.replace(/\s/ig,'').split(";");
+            var transfSty = this.editSel.transfcss.replace(/\s/ig,'').split(";")
+            edSty.forEach(function(item,index){
+                transfSty.forEach(function(sty,ind){
+                    if(item==sty){
+                        edSty.splice(index,1);
+                    }
+                })
+            })
+            
+            var edSelSty = edSty.join(";")
+
+    
+            objcur.style.cssText = edSelSty;
             objcur.style.visibility = "hidden";
             if(!this.clickch){
                 this.clickedit = false;
@@ -165,7 +178,7 @@ export default {
                 document.getElementsByClassName("edSize_text")[0].children[0].focus();
                 this.isTxtedit = true;            
             } 
-            // this.$store.dispatch("setisChange",true);
+            // this.$store.dispatch("setisChange",this.isChange);
 
         },
         touchstartEditResize(e){
@@ -187,13 +200,6 @@ export default {
                 }
             }
 
-
-            // if(this.editSel.editSelHtml!=document.getElementsByClassName("edSize_text")[0].innerHTML || this.isChange){
-            //     this.templateSave()
-            // }
-
-            // document.getElementsByClassName("edSize_text")[0].children[0].innerHTML = document.getElementsByClassName("edSize_text")[0].children[0].innerHTML.replace(/true/g,"false") 
-
             if(this.editSel.editSelShow){
                 this.clickch = false;
                 this.clickedit = true;
@@ -202,23 +208,19 @@ export default {
 
                             
                 objcur.style.visibility = "visible";
-
-                objcur.children[0].innerHTML = document.getElementsByClassName("edSize_text")[0].children[0].innerHTML;
+                objcur.children[0].innerHTML = document.getElementsByClassName("edSize_text")[0].innerHTML;
                 
                 if(this.editSel.editSelHtml!=document.getElementsByClassName("edSize_text")[0].innerHTML || this.isChange){
                     this.templateSave()
                 }
-                objcur.children[0].innerHTML=document.getElementsByClassName("edSize_text")[0].children[0].innerHTML=document.getElementsByClassName("edSize_text")[0].children[0].innerHTML.replace(/true/g,"false")
+                objcur.children[0].innerHTML=document.getElementsByClassName("edSize_text")[0].innerHTML=document.getElementsByClassName("edSize_text")[0].innerHTML.replace(/true/g,"false")
 
-
-                this.$store.dispatch("seteditSel",{"editSelShow":false,"editSelSty":'',"editSelHtml":'',"pageIndex":""});
+                
+                this.$store.dispatch("seteditAct",false)
+                this.$store.dispatch("seteditSel",{"editSelShow":false,"editSelSty":'',"editSelHtml":'',"pageIndex":"",'transfcss':''});
+                // console.log(this.editSel.editSelSty)
                 this.$store.dispatch("settxtInfo",{"cssStyle":this.editSel.editSelSty,"text":objcur.children[0].innerHTML});
-            }
-            // if(this.isTxtedit){
-            //     this.$store.dispatch("settxtInfo",{"cssStyle":this.editSel.editSelSty,"text":objcur.children[0].innerHTML});
-            // }
-
-            
+            }            
 
         },     
         _getQueryId(name){
@@ -226,7 +228,12 @@ export default {
             var r = window.location.search.substr(1).match(reg);
             if(r!=null)return  unescape(r[2]); return "";
         },
-        templateSave(){                                                 //模板保存              当前保存的只有文字编辑
+        templateSave(){                                                 //模板保存              当前保存的只有文字编辑          
+            this.$store.dispatch("setisChange",this.isChange);
+
+
+
+
             this.themeStyleId = this._getQueryId("themeStyleId");
             this.themeTemplateId = this._getQueryId("themeTemplateId");
             this.growthType = this._getQueryId("growthType");
@@ -257,6 +264,8 @@ export default {
         // 拼接post正确传参
             var ElementListArr = [];
             var elobj = {};         
+
+            
         // 判断页面是否被编辑过           减少通过上传保存数据步骤   优化请求  
             if(this.isChange){
                 for(var i=0;i<el_type.length;i++){
@@ -284,24 +293,24 @@ export default {
                 var that = this;
                 // 保存（上传）编辑         pageId---->对应archivesInfo[this.pageIndex]里的值
                 // http://192.168.0.3:5581/webapi/api/GrowthEditor/SavePage?loginUserId=1070428102732390&loginAccountType=0&loginFamilyStudentUserId=1070428102732390&themeStyleId=1&themeTemplateId=1&userId=2170907160208153&plateId=&roleType=4&pageId=59368767-00ba-11e8-ae58-a4badb17ff39&growthType=4&growthId=1
-                this.$store.dispatch("setSavePage",{
-                    "loginUserId":SST_Global_Account.LoginUserId,
-                    "loginAccountType":SST_Global_Account.LoginUserAccountType,
-                    "loginFamilyStudentUserId":SST_Global_Account.LoginFamilyStudentUserId,
-                    "themeStyleId":this.themeStyleId,"themeTemplateId":this.themeTemplateId,
-                    "userId":this.userId,"growthId":this.growthId,
-                    "plateId":'',"roleType":"4",
-                    "growthType":this.growthType,
-                    "pageId":archivesInfo[this.editSel.pageIndex].Id,
-                    "pageInfo":"="+(encodeURIComponent(JSON.stringify(dataParamet)))
-                }).then(response => {
-                    if(response.ResultCode!=1){
-                        console.log("数据加载失败.请重试.")
-                    }else{         
-                        that.isChange = false;       
-                        isEdit = "0";
-                    }
-                })
+                // this.$store.dispatch("setSavePage",{
+                //     "loginUserId":SST_Global_Account.LoginUserId,
+                //     "loginAccountType":SST_Global_Account.LoginUserAccountType,
+                //     "loginFamilyStudentUserId":SST_Global_Account.LoginFamilyStudentUserId,
+                //     "themeStyleId":this.themeStyleId,"themeTemplateId":this.themeTemplateId,
+                //     "userId":this.userId,"growthId":this.growthId,
+                //     "plateId":'',"roleType":"4",
+                //     "growthType":this.growthType,
+                //     "pageId":archivesInfo[this.editSel.pageIndex].Id,
+                //     "pageInfo":"="+(encodeURIComponent(JSON.stringify(dataParamet)))
+                // }).then(response => {
+                //     if(response.ResultCode!=1){
+                //         console.log("数据加载失败.请重试.")
+                //     }else{         
+                //         that.isChange = false;       
+                //         isEdit = "0";
+                //     }
+                // })
             }
         },
     }

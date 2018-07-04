@@ -48,3 +48,11 @@ export function getStatus(state){                      //是否启动
     return state.Status
 }
 
+export function getEditAct(state){                      //是否启动
+    return state.editAct
+}
+
+export function getChangePgId(state){                      //是否启动
+    return state.changePgId
+}
+

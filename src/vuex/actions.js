@@ -44,6 +44,13 @@ export const setStatus = function({commit},type){                  //是否启�
     commit("set_Status",type)
 }
 
+export const seteditAct = function({commit},type){                  //是否启动
+    commit("set_editAct",type)
+}
+
+export const setchangePgId = function({commit},type){                  //是否启动
+    commit("set_changePgId",type)
+}
 
 
 
@@ -55,8 +62,9 @@ export const setStatus = function({commit},type){                  //是否启�
 
 // http://192.168.0.3:5581/webapi/api/GrowthEditor/GetPhotoList?loginUserId=2170907155816420&loginAccountType=0&loginFamilyStudentUserId=2170907155816420&pageIndex=1&pageSize=8
 
-let _url_ = 'http://192.168.0.3:5581';
-// let _url_ = 'http://www.91sst.cn';
+// let _url_ = 'http://192.168.0.3:5581';
+let _url_ = 'http://www.91sst.cn';
+
 
 export const getUserGrowthInfo = function({commit},paramObj){  
     return new Promise((resolve, reject) => {
@@ -217,4 +225,24 @@ export const getUploadPhoto4Url = function({commit},paramObj){
         })
     })  
 }
+
+
+// 生成截图
+export const setBatchPrintImage = function({commit},paramObj){  
+    return new Promise((resolve, reject) => {
+        var postUrl = _url_ + "/webapi/api/GrowthEditor/BatchPrintImage?loginUserId="+paramObj.loginUserId+
+                "&loginAccountType="+paramObj.loginAccountType+
+                "&loginFamilyStudentUserId="+paramObj.loginFamilyStudentUserId+
+                "&growthId="+paramObj.growthId+
+                "&pageIds="+paramObj.pageIds;
+        axios.post(postUrl,'',{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(response => {
+            // console.log(response)
+            resolve(response.data);
+        }, response => {
+            //console.log(response);
+        })
+    })  
+}
+
+
 

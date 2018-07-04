@@ -1,6 +1,6 @@
 <template>
     <div id="mbbg" class="mbbg" @touchstart="touchStart" @touchmove="touchMove($event)" @touchend="touchEnd($event)">
-        <div class="header" @click="templateSave">
+        <div class="header" @click="templateSave_Cut">
             <span class="h-templateSave">模版保存</span>
         </div>
         <transition :name="flodName">
@@ -21,7 +21,7 @@
         </transition>
 
         <edit-txt></edit-txt>
-        <audio :src="musicSrc" autoplay loop></audio>
+       <!-- <audio :src="musicSrc" autoplay loop></audio> -->
 
     </div>
 </template>
@@ -56,15 +56,17 @@ export default {
             musicSrc:'',            //背景音乐
             GrowthType:'',          
             Status:'',
+
+            editSel:[],
+            editAct:false,
+            changePgId:[],
         }
     },
     components:{
         mb1,mb2,"edit-txt" : edittxt
     },
     mounted:function(){
-        // var ssssss = document.getElementsByClassName("h-templateSave")[0]
-        // alert(document.getElementsByTagName("html")[0].style.fontSize)
-        this.$store.dispatch("setIsChoiceImg",{"isChoice":false,"boxHeight":0,"boxWidth":0});
+        this.$store.dispatch("setIsChoiceImg",{"src":'',"isChoice":false,"boxHeight":0,"boxWidth":0});
         
         this.themeStyleId = this._getQueryId("themeStyleId");
         this.themeTemplateId = this._getQueryId("themeTemplateId");
@@ -90,11 +92,16 @@ export default {
             this.playMB1="mb1";
         }       
     
+    
+        this.isChange = this.$store.getters.getisChange;
         this.editSel = this.$store.getters.getEditSel; 
+        this.editAct = this.$store.getters.getEditAct;
+
+        this.changePgId = this.$store.getters.getChangePgId
 
         this.init();
     },
-    computed:mapGetters(['getIsChoiceImg','getisChange']),
+    computed:mapGetters(['getIsChoiceImg','getisChange','getEditAct']),
     watch:{
         getIsChoiceImg() {
             if(this.$store.getters.getIsChoiceImg){
@@ -105,7 +112,11 @@ export default {
         },
         getisChange(){
             this.isChange = this.$store.getters.getisChange;
-        }
+            // console.log(this.isChange)
+        },
+        getEditAct(){
+            this.editAct = this.$store.getters.getEditAct 
+        },
     },
     methods:{
         _getQueryId(name){
@@ -133,8 +144,9 @@ export default {
         touchMove(e) {           
             e.preventDefault(); 
         },
-        touchEnd(e){
-            if(!this.editSel.editSelShow){
+        touchEnd(e){            
+            // if(!this.editSel.editSelShow){
+            if(!this.editAct){
                 var iseditChange= false;
                 var actY = e.changedTouches[0].clientY;	
                 var HtmlFont = document.getElementsByTagName('html')[0].style.fontSize.replace("px","");          
@@ -168,8 +180,20 @@ export default {
         },
         templateSave(){                                                 //模板保存              当前保存的只有文字编辑
             var el_JsonPg = archivesInfo[this.pageIndex].JsonPage;          //取得当前页的数据
+            
         //所在页面里元素的类型     0：图片   1：文字    2：带相框 
             var el_type = el_JsonPg.el_type;
+            var that = this;
+            var isAdd = true
+
+            this.changePgId.forEach(function(item,index){
+                if(item==archivesInfo[that.pageIndex].Id){
+                    isAdd = false
+                }
+            })
+            if(isAdd){
+                this.changePgId.push(archivesInfo[this.pageIndex].Id) 
+            }
         // 编辑后传给数据库的信息
             var obj_div = document.getElementsByClassName("editel");
             var obj_divtransf = document.getElementsByClassName("transf");
@@ -192,7 +216,7 @@ export default {
             var ElementListArr = [];
             var elobj = {};         
         // 判断页面是否被编辑过           减少通过上传保存数据步骤   优化请求  
-            if(this.isChange){
+            // if(this.isChange){
                 for(var i=0;i<el_type.length;i++){
                     if(el_type[i]==0){                  //图片
                         elobj = {"Style":el_JsonPg.el_style[i],"ElementType":el_JsonPg.el_type[i],"Level2Element":
@@ -215,10 +239,9 @@ export default {
                 }
                 var dataParamet = {"Style":el_JsonPg.page_style,"Level1ElementList":ElementListArr}
 
-                this.$store.dispatch("setIsTips",{"_isShow":true,"_value":"正在保存中..."});
+                // this.$store.dispatch("setIsTips",{"_isShow":true,"_value":"正在保存中..."});
 
-
-                var that = this;
+                
                 // 保存（上传）编辑         pageId---->对应archivesInfo[this.pageIndex]里的值
                 // http://192.168.0.3:5581/webapi/api/GrowthEditor/SavePage?loginUserId=1070428102732390&loginAccountType=0&loginFamilyStudentUserId=1070428102732390&themeStyleId=1&themeTemplateId=1&userId=2170907160208153&plateId=&roleType=4&pageId=59368767-00ba-11e8-ae58-a4badb17ff39&growthType=4&growthId=1
                 this.$store.dispatch("setSavePage",{
@@ -238,14 +261,40 @@ export default {
                         that.isChange = false;       
                         isEdit = "0";
                         that.$store.dispatch("setisChange",false); 
-                        that.$store.dispatch("setIsTips",{"_isShow":false});
+                        // that.$store.dispatch("setIsTips",{"_isShow":false});
                     }
                 })
-            }else{
-                this.$store.dispatch("setIsTips",{"_isShow":true,"_value":"保存完成"});
-                setTimeout(this.closeTips,1000);
-            }
+            // }else{
+            //     this.$store.dispatch("setIsTips",{"_isShow":true,"_value":"保存完成"});
+            //     setTimeout(this.closeTips,1000);
+            // }
         },
+        templateSave_Cut(){
+            this.templateSave()
+            var that = this
+            this.$store.dispatch("setBatchPrintImage",{
+                "loginUserId":SST_Global_Account.LoginUserId,
+                "loginAccountType":SST_Global_Account.LoginUserAccountType,
+                "loginFamilyStudentUserId":SST_Global_Account.LoginFamilyStudentUserId,               
+                "growthId":this.growthId,
+                "pageIds":this.changePgId.join("|")
+            }).then(response => {
+                if(response.ResultCode!=1){
+                    console.log("数据加载失败.请重试.")
+                }else{         
+                    that.isChange = false;       
+                    isEdit = "0";
+                    that.$store.dispatch("setisChange",false); 
+                    // that.$store.dispatch("setIsTips",{"_isShow":false});
+                }
+            })
+        
+
+
+
+        },
+
+
         closeTips(){
             this.$store.dispatch("setIsTips",{"_isShow":false});
         },

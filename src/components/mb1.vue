@@ -68,7 +68,7 @@ export default {
                                 $(".isEditImg").show()
                             }
 
-                            that.$store.dispatch("setIsChoiceImg",{"isChoice":true,"index":this.getAttribute("data-id"), "boxHeight":this.clientHeight,"boxWidth":this.clientWidth});
+                            that.$store.dispatch("setIsChoiceImg",{"src":CurSrc,"isChoice":true,"index":this.getAttribute("data-id"), "boxHeight":this.clientHeight,"boxWidth":this.clientWidth});
                             
                             var CurHeight = CurCon.style.height ? ((CurCon.style.height=="auto")?this.clientHeight:parseInt(CurCon.style.height)) : this.clientHeight;               
                             var CurWidth = CurCon.style.width ? ((CurCon.style.width=="auto")?this.clientWidth:parseInt(CurCon.style.width)) : this.clientWidth;
@@ -100,9 +100,13 @@ export default {
                             }
                         }else if(this.className.indexOf("el_text")>-1){             //文字编辑
                             var editTxtHtml = this.style.cssText;
+                            var transfcss = this.getElementsByClassName('transf')[0].style.cssText
+                            var innerHTML = this.getElementsByClassName('transf')[0].innerHTML
                             this.style.visibility = 'hidden';
                             isEdit = "1";
-                            that.$store.dispatch("seteditSel",{"editSelID":this.getAttribute("data-id"),"editSelSty":editTxtHtml,"editSelShow":true,"editSelHtml":this.innerHTML,"pageIndex":that.pageIndex});     
+                            that.$store.dispatch("seteditAct",true)
+                            that.$store.dispatch("seteditSel",{'transfcss':transfcss,"editSelID":this.getAttribute("data-id"),"editSelSty":editTxtHtml,"editSelShow":true,"editSelHtml":innerHTML,"pageIndex":that.pageIndex});     
+
                         }
                     }
                 }

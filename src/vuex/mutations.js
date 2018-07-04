@@ -20,6 +20,9 @@ export default {
         if(!(typeof(type.index)=='undefined')){
             state.choiceimg.index = type.index;  
         }     
+        if(!(typeof(type.src)=='undefined')){
+            state.choiceimg.src = type.src;              
+        }
     },
     set_CurSrc(state,type){
         if(!(typeof(type.Src)=='undefined')){
@@ -63,6 +66,9 @@ export default {
         }if(!(typeof(type.pageIndex)=='undefined')){
             state.editSel.pageIndex = type.pageIndex;
         }
+        if(!(typeof(type.transfcss)=='undefined')){
+            state.editSel.transfcss = type.transfcss;
+        }
     },
     set_txtInfo(state,type){                         //文字编辑的信息
         if(!(typeof(type.cssStyle)=='undefined')){
@@ -81,6 +87,12 @@ export default {
     },
     
 
+    set_editAct(state,type){                                      //是否启动
+        state.editAct = type
+    },
     
+    set_changePgId(state,type){                                  
+        state.changePgId = type
+    },
     
 }

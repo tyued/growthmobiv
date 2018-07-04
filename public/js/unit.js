@@ -15,8 +15,8 @@ if(!growthId){
     $("#app").append('<div class="tipsBox" style=""><div class="hDialog" style=""><div class="tipTxt">正在生成新成长档案...</div></div></div><div class="maskTips" style=""></div>')
 }
 // http://www.91sst.cn/webapi/api/GrowthEditor/GetLoginUserJson?loginUserId
-var _url_ = 'http://192.168.0.3:5581';
-// var _url_ = 'http://www.91sst.cn';
+// var _url_ = 'http://192.168.0.3:5581';
+var _url_ = 'http://www.91sst.cn';
 $.ajax({
     url: _url_+"/webapi/api/GrowthEditor/GetLoginUserJson?loginUserId="+loginUserId+"&loginAccountType="+loginAccountType+"&loginFamilyStudentUserId="+loginFamilyStudentUserId,
     type: 'get',
@@ -57,8 +57,6 @@ $.ajax({
         
     // }
 })
-
-
 
 // var SST_Global_Account={
 //     LoginUserId:'1070428102732390',
@@ -263,7 +261,8 @@ function _css2obj(cssstr){
     var cssarr = spec_cssarr[0].split(";")
 
     for(var i in cssarr){
-        if(cssarr[i]){
+        if(cssarr[i]!=""&&cssarr[i]!="undefined"&&cssarr[i]!="null"){
+
             temp = cssarr[i].split(":");
             var cssN = myStr(temp[0]).myTrim
             cssobj[myStr(cssN).myCssn] = myStr(temp[1]).myTrim;
@@ -273,7 +272,7 @@ function _css2obj(cssstr){
     if(spec_cssarr[1]!="undefined"&&spec_cssarr[1]){
         var cssarr_act = spec_cssarr[1].split(";")
         for(var i in cssarr_act){
-            if(cssarr_act[i]){
+            if(cssarr_act[i]!=""&&cssarr_act[i]!="undefined"&&cssarr_act[i]!="null"){
                 temp = cssarr_act[i].split(":");              
                 var cssN = myStr(temp[0]).myTrim
                 cssobj_act[myStr(cssN).myCssn] = myStr(temp[1]).myTrim;

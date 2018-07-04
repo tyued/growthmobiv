@@ -44,7 +44,7 @@
                 wHeight = (screen.height > 0) ? (window.innerHeight >= screen.height || window.innerHeight == 0) ? screen.height : window.innerHeight : window.innerHeight;
                 wFsize = wWidth > 1080 ? 144 : wWidth / 7.5;
                 wFsize = wFsize > 20 ? wFsize : 20;
-               // document.getElementsByTagName('html')[0].dataset.dpr = wDpr;
+                // document.getElementsByTagName('html')[0].dataset.dpr = wDpr;
                 document.getElementsByTagName('html')[0].style.fontSize = wFsize + 'px';
                 document.getElementById("fixed").style.display="none";
             },500);
